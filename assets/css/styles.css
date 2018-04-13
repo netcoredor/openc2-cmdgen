@@ -1,0 +1,17 @@
+.bold {
+  font-weight:bold;
+}
+
+.input-disabled{
+	background-color:#FFFFFF;
+	border:1px solid #FFFFFF;
+	padding:2px 1px;
+	color:#FFFFFF;
+	visibility: hidden;
+}
+
+.input-disabled_backup{
+	background-color:#EBEBE4;
+	border:1px solid #ABADB3;
+	padding:2px 1px;
+}

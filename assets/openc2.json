@@ -1,0 +1,668 @@
+{
+ "meta": {
+  "description": "Datatypes that define the content of OpenC2 commands.  These types are used with an Encoder/Decoder (codec) to serialize and deserialize commands for transmission in a format such as JSON, XML, or CBOR, or to generate format-specific message schemas. This version includes an embedded target data model, pending development of the import mechanism.",
+  "import": [
+   [1, "target", "http://openc2.org/target"]]
+,
+  "module": "openc2",
+  "namespace": "http://openc2.org/openc2",
+  "root": "OpenC2Object",
+  "title": "OpenC2 Command Definitions",
+  "version": "0.3"
+ },
+
+ "types": [
+  ["OpenC2Object", "Choice", [], "", [
+    [1, "command", "OpenC2Command", [], ""],
+    [2, "response", "OpenC2Response", [], ""],
+    [3, "alert", "OpenC2Alert", [], ""]]
+  ],
+
+  ["OpenC2Command", "Record", [], "", [
+    [1, "action", "Action", [], ""],
+    [2, "target", "Target", [], ""],
+    [3, "actuator", "Actuator", ["?"], ""],
+    [4, "modifiers", "Modifiers", ["?"], ""]]
+  ],
+
+  ["OpenC2Response", "Record", [], "", [
+    [1, "status", "status-code", [], "Adapted from HTTP Status Codes, RFC 7231"],
+    [2, "statusText", "String", ["?"], "Status description"],
+    [3, "response_src", "device-id", ["?"], "ID of the responder/actuator"],
+    [4, "command_ref", "command-id", ["?"], "Command unique identifier, from \"command_id\" modifier"],
+    [5, "results", "results", ["?"], "Results of executing the command"]]
+  ],
+
+  ["OpenC2Alert", "Record", [], "", [
+    [1, "message", "String", [], ""]]
+  ],
+
+  ["Action", "Enumerated", [], "", [
+    [1, "scan", "Systematic examination of some aspect of the target entity or its environment."],
+    [2, "locate", "Find the target object physically, logically, functionally, or by organization."],
+    [3, "query", "Initiate a single request for information."],
+    [4, "report", "Task an entity to provide information to a designated recipient."],
+    [5, "notify", "Set an entity's alerting preferences"],
+    [6, "deny", "Prevent a certain event or action from completion"],
+    [7, "contain", "Isolate a file or process or entity so that it cannot modify or access other assets or processes"],
+    [8, "allow", "Permit access to or execution of a target"],
+    [9, "start", "Initiate a process, application, system, or activity"],
+    [10, "stop", "Halt a system or end an activity"],
+    [11, "restart", "Stop then start a system or activity"],
+    [12, "pause", "Cease a system or activity while maintaining state"],
+    [13, "resume", "Start a system or activity from a paused state"],
+    [14, "cancel", "Invalidate a previous action"],
+    [15, "set", "Change a value, configuration, or state of a managed entity"],
+    [16, "update", "Instruct a component to retrieve, install, process, and operate in accordance with a software update, reconfiguration, or other update."],
+    [17, "move", "Change the location of a file, subnet, network, or process"],
+    [18, "redirect", "Change the flow of traffic to a destination other than its original destination"],
+    [19, "delete", "Remove data and files"],
+    [20, "snapshot", "Record and store the state of a target at an instant in time"],
+    [21, "detonate", "Execute and observe the behavior of a target in an isolated environment"],
+    [22, "restore", "Delete or replace files, settings, or attributes to return the system to an identical or similar known state"],
+    [23, "save", "Commit data or system state to memory"],
+    [24, "throttle", "Adjust the throughput of a data flow"],
+    [25, "delay", "Stop or hold up an activity or data transmittal"],
+    [26, "substitute", "Replace all or part of the data, content or payload in the least detectable manner"],
+    [27, "copy", "Duplicate a file or data flow"],
+    [28, "sync", "Synchronize a sensor or actuator with other system components"],
+    [29, "distill", "Task a sensor to send a summary or abstraction of the sensing information instead of the raw data feed"],
+    [30, "augment", "Task a sensor to do a level of preprocessing or sense making prior to sending the sensor data"],
+    [31, "investigate", "Task the recipient enclave to aggregate and report information as it pertains to an anomaly"],
+    [32, "mitigate", "Task the recipient enclave to circumvent the problem without necessarily eliminating the vulnerability or attack point"],
+    [33, "remediate", "Task the recipient enclave to eliminate the vulnerability or attack point"]]
+  ],
+
+  ["Target", "Choice", [], "OpenC2 Target datatypes", [
+    [1, "artifact", "artifact", [], "SCO v2"],
+    [2, "openc2", "openc2", [], "OpenC2 - query actuator for supported capabilities, negotiate connection"],
+    [3, "device", "device", [], "CybOX 2.1"],
+    [4, "directory", "directory", [], "SCO v2"],
+    [5, "disk", "disk", [], "CybOX 2.1"],
+    [6, "disk_partition", "disk-partition", [], "CybOX 2.1"],
+    [7, "domain_name", "domain-name", [], "SCO v2"],
+    [8, "email_addr", "email-addr", [], "SCO v2"],
+    [9, "email_message", "email-message", [], "SCO v2"],
+    [10, "file", "file", [], "SCO v2"],
+    [11, "ipv4_addr", "ipv4-addr", [], "SCO v2"],
+    [12, "ipv6_addr", "ipv6-addr", [], "SCO v2"],
+    [13, "mac_addr", "mac-addr", [], "SCO v2"],
+    [14, "memory", "memory", [], "CybOX 2.1"],
+    [15, "ip_connection", "ip-connection", [], "OpenC2"],
+    [16, "process", "process", [], "SCO v2"],
+    [17, "software", "software", [], "SCO v2"],
+    [18, "url", "url", [], "SCO v2"],
+    [19, "user_account", "user-account", [], "SCO v2"],
+    [20, "user_session", "user-session", [], "CybOX 2.1"],
+    [21, "volume", "volume", [], "CybOX 2.1"],
+    [22, "windows_registry_key", "windows-registry-key", [], "SCO v2"],
+    [23, "x509_certificate", "x509-certificate", [], "SCO v2"],
+	[24, "property", "property", [], "SCO v2"]
+	
+	]
+  ],
+
+  ["Actuator", "Choice", [], "", [
+    [0, "any", "ActuatorSpecifiers", [], ""],
+    [1, "endpoint", "ActuatorSpecifiers", [], ""],
+    [2, "endpoint_digital_telephone_handset", "ActuatorSpecifiers", [], ""],
+    [3, "endpoint_laptop", "ActuatorSpecifiers", [], ""],
+    [4, "endpoint_pos_terminal", "ActuatorSpecifiers", [], ""],
+    [5, "endpoint_printer", "ActuatorSpecifiers", [], ""],
+    [6, "endpoint_sensor", "ActuatorSpecifiers", [], ""],
+    [7, "endpoint_server", "ActuatorSpecifiers", [], ""],
+    [8, "endpoint_smart_meter", "ActuatorSpecifiers", [], ""],
+    [9, "endpoint_smart_phone", "ActuatorSpecifiers", [], ""],
+    [10, "endpoint_tablet", "ActuatorSpecifiers", [], ""],
+    [11, "endpoint_workstation", "ActuatorSpecifiers", [], ""],
+    [12, "network", "ActuatorSpecifiers", [], ""],
+    [13, "network_bridge", "ActuatorSpecifiers", [], ""],
+    [14, "network_firewall", "ActuatorSpecifiers", [], ""],
+    [15, "network_gateway", "ActuatorSpecifiers", [], ""],
+    [16, "network_guard", "ActuatorSpecifiers", [], ""],
+    [17, "network_hips", "ActuatorSpecifiers", [], ""],
+    [18, "network_hub", "ActuatorSpecifiers", [], ""],
+    [19, "network_ids", "ActuatorSpecifiers", [], ""],
+    [20, "network_ips", "ActuatorSpecifiers", [], ""],
+    [21, "network_modem", "ActuatorSpecifiers", [], ""],
+    [22, "network_nic", "ActuatorSpecifiers", [], ""],
+    [23, "network_proxy", "ActuatorSpecifiers", [], ""],
+    [24, "network_router", "ActuatorSpecifiers", [], ""],
+    [25, "network_security_manager", "ActuatorSpecifiers", [], ""],
+    [26, "network_sense_making", "ActuatorSpecifiers", [], ""],
+    [27, "network_sensor", "ActuatorSpecifiers", [], ""],
+    [28, "network_switch", "ActuatorSpecifiers", [], ""],
+    [29, "network_vpn", "ActuatorSpecifiers", [], ""],
+    [30, "network_wap", "ActuatorSpecifiers", [], ""],
+    [31, "process", "ActuatorSpecifiers", [], ""],
+    [32, "process_aaa_server", "ActuatorSpecifiers", [], ""],
+    [33, "process_anti_virus_scanner", "ActuatorSpecifiers", [], ""],
+    [34, "process_connection_scanner", "ActuatorSpecifiers", [], ""],
+    [35, "process_directory_server", "ActuatorSpecifiers", [], ""],
+    [36, "process_dns_server", "ActuatorSpecifiers", [], ""],
+    [37, "process_email_service", "ActuatorSpecifiers", [], ""],
+    [38, "process_file_scanner", "ActuatorSpecifiers", [], ""],
+    [39, "process_location_service", "ActuatorSpecifiers", [], ""],
+    [40, "process_network_scanner", "ActuatorSpecifiers", [], ""],
+    [41, "process_remediation_service", "ActuatorSpecifiers", [], ""],
+    [42, "process_reputation_service", "ActuatorSpecifiers", [], ""],
+    [43, "process_sandbox", "ActuatorSpecifiers", [], ""],
+    [44, "process_virtualization_service", "ActuatorSpecifiers", [], ""],
+    [45, "process_vulnerability_scanner", "ActuatorSpecifiers", [], ""],
+	  [46, "stateless_packet_filter", "ActuatorSpecifiers", [], ""]]
+  ],
+
+  ["ActuatorSpecifiers", "Record", [], "", [
+    [1, "actuator_id", "url", ["?"], ""],
+    [2, "asset_id", "String", ["?"], ""]]
+  ],
+
+  ["Modifiers", "Map", [], "", [
+    [1, "context", "String", ["?"], "universal"],
+    [2, "start_time", "date-time", ["?"], "universal"],
+    [3, "end_time", "date-time", ["?"], "universal"],
+    [4, "duration", "duration", ["?"], "pause, delay"],
+    [5, "frequency", "duration", ["?"], "report, notify, restart, update, sync"],
+    [6, "command_id", "command-id", ["?"], "universal  (was \"id\")"],
+    [7, "command_src", "device-id", ["?"], "add to universal"],
+    [8, "response", "response-type", ["?"], "universal"],
+    [9, "respond_to", "respond-to", ["?"], "investigate/mitigate/remediate, was report_to"],
+    [10, "source", "location", ["?"], "update"],
+    [11, "destination", "location", ["?"], "copy, move, save"],
+    [12, "options", "String", ["?"], "add to universal? (restart, set, substitute, restore)"],
+    [13, "method", "method-value", ["?"], "deny, pause, scan, start, stop, augment"],
+    [14, "search", "search-type", ["?"], "scan"],
+    [15, "where", "where", ["?"], "allow, deny, contain"],
+    [16, "message", "String", ["?"], "notify"]]
+  ],
+
+  ["date-time", "String", [">^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d{1,6})?(Z|[-+]\\d\\d:\\d\\d)$"], "RFC 3339 date-time"],
+
+  ["duration", "String", [">^PT(\\d+H(\\d+M(\\d+S)?)?|\\d+M(\\d+S)?|\\d+S)$"], "RFC 3339 / ISO 8601 duration (regex is for dur-time option only, need full duration)"],
+
+  ["command-id", "String", [], "Command unique identifier"],
+
+  ["device-id", "String", [], "Device Identifier / Address (url)"],
+
+  ["respond-to", "String", [], "Location to send responses to (url)"],
+
+  ["location", "String", [], "Object/data locations (url)"],
+
+  ["response-type", "Enumerated", [], "", [
+    [1, "ack", ""],
+    [2, "status", ""]]
+  ],
+
+  ["method-value", "Choice", [], "Method must agree with Action", [
+    [1, "deny", "DenyMethod", [], "Action must be \"deny\""],
+    [2, "pause", "PauseMethod", [], "Action must be 'pause'"],
+    [3, "scan", "ScanMethod", [], "Action must be 'scan\""],
+    [4, "start", "StartMethod", [], "Action must be start"],
+    [5, "stop", "StopMethod", [], "Action must be \"stop\""]]
+  ],
+
+  ["DenyMethod", "Enumerated", [], "", [
+    [1, "acl", ""],
+    [2, "blackhole", ""],
+    [3, "sinkhole", ""],
+    [4, "blacklist", ""],
+    [5, "whitelist", ""]]
+  ],
+
+  ["PauseMethod", "Enumerated", [], "", [
+    [1, "hibernate", ""],
+    [2, "sleep", ""],
+    [3, "suspend", ""]]
+  ],
+
+  ["ScanMethod", "Enumerated", [], "", [
+    [1, "authenticated", ""],
+    [2, "non-authenticated", ""]]
+  ],
+
+  ["StartMethod", "Enumerated", [], "", [
+    [1, "spawn", ""]]
+  ],
+
+  ["StopMethod", "Enumerated", [], "", [
+    [1, "graceful", ""],
+    [2, "immediate", ""]]
+  ],
+
+  ["search-type", "Enumerated", [], "", [
+    [1, "cve", ""],
+    [2, "patch", ""],
+    [3, "vendor-bulletin", ""],
+    [4, "signature", ""]]
+  ],
+
+  ["where", "Enumerated", [], "", [
+    [1, "internal", ""],
+    [2, "perimeter", ""],
+    [3, "unspecified", "redirect, was \"where = null\""]]
+  ],
+
+  ["status-code", "Enumerated", [], "Adapted from HTTP Status Codes, RFC 7231", [
+    [102, "Processing", "1xx: Informational"],
+    [200, "OK", "2xx: Success"],
+    [400, "Bad_Request", "3xx: Redirection"],
+    [401, "Unauthorized", "4xx: Client Error"],
+    [403, "Forbidden", ""],
+    [500, "Internal_Server_Error", "5xx: Server Error"],
+    [501, "Not_Implemented", ""]]
+  ],
+
+  ["Base64", "String", [], "A sequence of octets encoded as a Base64 string"],
+
+  ["Hex", "String", [], "A sequence of octets encoded as a hexadecimal string"],
+
+  ["hashes-type", "Map", [], "Hash values for algorithms included in hash-algo-ov", [
+    [1, "MD5", "Hex", ["?"], "MD5 message digest as defined in RFC3121"],
+    [2, "MD6", "Hex", ["?"], "MD6 message digest as defined in MD6 proposal"],
+    [3, "RIPEMD-160", "Hex", ["?"], "RACE Integrity Primitives Evaluation Message as defined in RIPEMD-160 specification"],
+    [4, "SHA-1", "Hex", ["?"], "Secure Hash Algorithm (SHA)-1 as defined in RFC3174"],
+    [5, "SHA-224", "Hex", ["?"], "SHA-224 as defined in RFC6234 (US Secure Hash Algorithms)"],
+    [6, "SHA-256", "Hex", ["?"], "SHA-256 as defined in RFC6234"],
+    [7, "SHA-384", "Hex", ["?"], "SHA-384 as defined in RFC6234"],
+    [8, "SHA-512", "Hex", ["?"], "SHA-512 as defined in RFC6234"],
+    [9, "SHA3-224", "Hex", ["?"], "SHA3-224 as defined in FIPS PUP 202"],
+    [10, "SHA3-256", "Hex", ["?"], "SHA3-256 as defined in FIPS PUP 202"],
+    [11, "SHA3-384", "Hex", ["?"], "SHA3-384 as defined in FIPS PUP 202"],
+    [12, "SHA3-512", "Hex", ["?"], "SHA3-512 as defined in FIPS PUP 202"],
+    [13, "ssdeep", "Hex", ["?"], "ssdeep fuzzy hashing algorithm as defined in the SSDEEP specification"],
+    [14, "WHIRLPOOL", "Hex", ["?"], "whirlpool cryptographic hash function as defined in ISO/IEC 10118-3:2004"]]
+  ],
+
+  ["encryption-algo", "Enumerated", [], "Replace with an IANA algorithm registry?  Which one?", [
+    [1, "AES128-ECB", "Advanced Encryption Standard (AES) with Electronic Codebook (ECB) mode, NIST SP 800-38A"],
+    [2, "AES128-CBC", "AES with Cipher Block Chaining (CBC) mode, NIST SP 800-38A"],
+    [3, "AES128-CFB", "AES with Cipher Feedback (CFB) mode, NIST SP 800-38A"],
+    [4, "AES128-OFB", "AES with Output Feedback (OFB) mode, NIST SP 800-38A"],
+    [5, "AES128-CTR", "AES with Counter (CTR) mode, NIST SP 800-38A"],
+    [6, "AES128-XTS", "AES with XEX Tweakable Block Cipher with Ciphertext Stealing (XTS) mode, NIST SP 800-38E"],
+    [7, "AES128-GCM", "AES with Galois Counter (GCM) mode, NIST SP 800-38D"],
+    [8, "Salsa20", "Salsa20 stream cipher"],
+    [9, "Salsa12", "Salsa20/12 stream cipher"],
+    [10, "ChaCha20-Poly1305", "ChaCha20-Poly1305 stream cipher, RFC 7539"],
+    [11, "ChaCha20", "ChaCha20 stream cipher without poly1305 authentication, RFC 7539"],
+    [12, "DES-CBC", "Data Encryption Standard (DES) with CBC mode, NIST FIPS Pub 81"],
+    [13, "3DES-CBC", "Triple DES (3DES) with CBC mode"],
+    [14, "DES-ECB", "DES with ECB mode, NIST FIPS Pub 81"],
+    [15, "3DES-ECB", "3DES with ECB mode"],
+    [16, "CAST128-CBC", "CAST-128 algorithm with CBC mode, RFC 2144"],
+    [17, "CAST256-CBC", "CAST-256 algorithm with CBC mode, RFC 2612"],
+    [18, "RSA", "RSA asymmetric encryption algorithm, RFC 2313"],
+    [19, "DSA", "Digital Signature Algorithm, NIST FIPS Pub 186-4 (*not an encryption algorithm)"]]
+  ],
+
+  ["artifact", "Record", [], "", [
+    [1, "mime_type", "String", ["?"], "MUST be a valid MIME type as specified in the IANA Media Types registry"],
+    [2, "*", "payload", ["?"], "choice of literal content or URL to obtain content"],
+    [3, "hashes", "hashes-type", ["?"], "Specifies a dictionary of hashes for the contents of the payload"]]
+  ],
+
+  ["payload", "Choice", [], "", [
+    [1, "payload_bin", "Base64", [], "Specifies the binary data contained in the artifact as a base64-encoded string."],
+    [2, "url", "String", [], "MUST be a valid URL that resolves to the un-encoded content"]]
+  ],
+
+  ["autonomous-system", "Record", [], "", [
+    [1, "number", "Integer", [], "Number assigned to the AS, typically by a Regional Internet Registry"],
+    [2, "name", "String", ["?"], "Name of the AS"],
+    [3, "rir", "String", ["?"], "Regional Internet Registry (RIR) that assigned the number to the AS"]]
+  ],
+
+  ["device", "Map", [], "TODO: Add inventory device-id?", [
+    [1, "description", "String", ["?"], ""],
+    [2, "device_type", "String", ["?"], ""],
+    [3, "manufacturer", "String", ["?"], ""],
+    [4, "model", "String", ["?"], ""],
+    [5, "serial_number", "String", ["?"], ""],
+    [6, "firmware_version", "String", ["?"], ""],
+    [7, "system_details", "String", ["?"], ""]]
+  ],
+
+  ["directory", "Map", [], "", [
+    [1, "path", "String", [], "Path, as originally observed, to the directory on the filesystem"],
+    [2, "path_enc", "String", ["?"], "Observed encoding for the path, from the IANA Character Set Registry"],
+    [3, "created", "date-time", ["?"], "Date/time the directory was created"],
+    [4, "modified", "date-time", ["?"], "Date/time the directory was last written-to/modified"],
+    [5, "accessed", "date-time", ["?"], "Date/time the directory was last accessed"],
+    [6, "contains", "dir-contents", ["?"], "List of files/directories contained within the directory"]]
+  ],
+
+  ["dir-contents", "ArrayOf", ["#dirfile"], ""],
+
+  ["dirfile", "Choice", [], "", [
+    [1, "d", "directory", [], ""],
+    [2, "f", "file", [], ""]]
+  ],
+
+  ["disk", "Map", [], "CybOX 2.1   TODO: Finish", []],
+
+  ["disk-partition", "Map", [], "CybOX 2.1    TODO: Finish", []],
+
+  ["domain-name", "String", [], "Value of the domain name"],
+
+  ["email-addr", "Record", [], "", [
+    [1, "value", "String", [], "Email address (addr-spec in RFC 5322 Section 3.4)"],
+    [2, "display_name", "String", ["?"], "Name that is displayed to the user of a mail application"],
+    [3, "belongs_to", "user-account", ["?"], "User account that the email address belongs to"]]
+  ],
+
+  ["email-addrs", "ArrayOf", ["#email-addr"], ""],
+
+  ["headers", "ArrayOf", ["#String"], ""],
+
+  ["mime-part-type", "Map", [], "TODO: Finish", []],
+
+  ["mime-part-types", "ArrayOf", ["#mime-part-type"], ""],
+
+  ["email-message", "Map", [], "", [
+    [1, "is_multipart", "Boolean", ["?"], "Indicates whether the email body contains multiple MIME parts"],
+    [2, "date", "date-time", ["?"], "specifies the date/time that the email message was sent"],
+    [3, "content_type", "String", ["?"], "Value of the Content-Type: header"],
+    [4, "from", "email-addr", ["?"], "Value of the From: header"],
+    [5, "sender", "email-addr", ["?"], "Value of the Sender: header"],
+    [6, "to", "email-addrs", ["?"], "Values of the To: recipients"],
+    [7, "cc", "email-addrs", ["?"], "Values of the CC: recipients"],
+    [8, "bcc", "email-addrs", ["?"], "Values of the BCC: recipients"],
+    [9, "subject", "String", ["?"], "Value of the Subject: header"],
+    [10, "received_lines", "strings", ["?"], "Value of Received: header fields in the order present in the email"],
+    [11, "additional_headers", "headers", ["?"], "header fields other than those listed above"],
+    [12, "body", "String", ["?"], "Body of the email. Used only if is_multipart is False."],
+    [13, "body_multipart", "mime-part-types", ["?"], "List of MIME parts. Used only if is_multipart is True."],
+    [14, "raw_email", "artifact", ["?"], "Raw binary contents of the email including headers and body"]]
+  ],
+
+  ["file", "Map", [], "", [
+    [1, "extensions", "file-extensions", ["?"], "Content-specific file information"],
+    [2, "hashes", "hashes-type", ["?"], "Dictionary of hashes for the file"],
+    [3, "size", "Integer", ["?"], "Size of the file, in bytes."],
+    [4, "name", "String", ["?"], "Name of the file."],
+    [5, "name_enc", "String", ["?"], "Observed encoding of the file, from IANA Character Set Registry"],
+    [6, "magic_number_hex", "Hex", ["?"], "Hexadecimal constant associated with a specific file format."],
+    [7, "mime_type", "String", ["?"], "MIMI type name for the file, from the IANA media type registry."],
+    [8, "created", "date-time", ["?"], "Date/time the file was created."],
+    [9, "modified", "date-time", ["?"], "Date/time the file was last written to / modified."],
+    [10, "accessed", "date-time", ["?"], "Date/time the file was last accessed."],
+    [11, "parent_directory", "directory", ["?"], "Parent directory of the file."],
+    [12, "is_encrypted", "Boolean", ["?"], "Specifies whether the file is encrypted."],
+    [13, "encryption_algorithm", "encryption-algo", ["?"], "Specifies the algorithm used to encrypt the file."],
+    [14, "decryption_key", "String", ["?"], "Decryption key used to decrypt the file."],
+    [15, "contains", "file-contents", ["?"], "List of observables contained within the file"],
+    [16, "content", "artifact", ["?"], "Content of the file."]]
+  ],
+
+  ["file-contents", "ArrayOf", ["#Target"], ""],
+
+  ["file-extensions", "Map", [], "", [
+    [1, "ntfs_ext", "ntfs-ext", ["?"], ""],
+    [2, "raster_image_ext", "raster-image-ext", ["?"], ""],
+    [3, "pdf_ext", "pdf-ext", ["?"], ""],
+    [4, "archive_ext", "archive-ext", ["?"], ""],
+    [5, "windows_pebinary_ext", "windows-pebinary-ext", ["?"], ""]]
+  ],
+
+  ["ntfs-ext", "Map", [], "TODO", []],
+
+  ["raster-image-ext", "Map", [], "TODO", []],
+
+  ["pdf-ext", "Map", [], "TODO", []],
+
+  ["archive-ext", "Map", [], "TODO", []],
+
+  ["windows-pebinary-ext", "Map", [], "TODO", []],
+
+  ["ip-addrs", "ArrayOf", ["#ip-addr"], ""],
+
+  ["ip-addr", "Choice", [], "", [
+    [1, "ipv4", "ipv4-addr", [], ""],
+    [2, "ipv6", "ipv6-addr", [], ""]]
+  ],
+
+  ["ipv4-addr", "String", [], "IPv4 address or range in CIDR notation"],
+
+  ["ipv6-addr", "String", [], "IPv6 address or range"],
+
+  ["mac-addrs", "ArrayOf", ["#mac-addr"], ""],
+
+  ["mac-addr", "String", [], "Colon-delimited MAC-48 address with leading zeros for each octet"],
+
+  ["ip-connection", "Record", [], "5-tuple that specifies a tcp/ip connection", [
+    [1, "src_addr", "ip-addr", ["?"], "source address"],
+    [2, "src_port", "port", ["?"], "source TCP/UDP port number"],
+    [3, "dst_addr", "ip-addr", ["?"], "destination address"],
+    [4, "dst_port", "port", ["?"], "destination TCP/UDP port number"],
+    [5, "layer4_protocol", "layer4-protocol", ["?"], "Protocol (IPv4) / Next Header (IPv6)"]]
+  ],
+
+  ["port", "Choice", [], "TCP/UDP port number or protocol", [
+    [1, "number", "Integer", [], "Port number (e.g., dynamically assigned)"],
+    [2, "protocol", "layer7-protocol", [], "Registered port nummber (registered with IANA)"]]
+  ],
+
+  ["layer3-protocol", "Enumerated", [], "IEEE 802 Ether Types - any IANA value, RFC 7042", [
+    [2048, "IPv4", "0x0800 Internet Protocol Version 4"],
+    [2054, "ARP", "0x0806 Address Resolution Protocol"],
+    [34525, "IPv6", "0x86DD Internet Protocol Version 6"],
+    [34887, "MPLS", "0x8847 Multi-Protocol Label Switching"]]
+  ],
+
+  ["layer4-protocol", "Enumerated", [], "protocol (IPv4) or next header (IPv6) field - any IANA value, RFC 5237", [
+    [1, "ICMP", "Internet Control Message Protocol - RFC 792"],
+    [6, "TCP", "Transmission Control Protocol - RFC 793"],
+    [17, "UDP", "User Datagram Protocol - RFC 768"]]
+  ],
+
+  ["layer7-protocol", "Enumerated", [], "Service Name and Transport Protocol Port - any IANA value, RFC 6335", [
+    [20, "ftp-data", "File Transfer Protocol (data)"],
+    [21, "ftp", "File Transfer Protocol (control)"],
+    [22, "ssh", "Secure Shell Protocol"],
+    [23, "telnet", "Telnet"],
+    [25, "smtp", "Simple Mail Transfer Protocol"],
+    [80, "http", "Hypertext Transport Protocol"],
+    [443, "https", "HTTP over TLS"]]
+  ],
+
+  ["memory", "Map", [], "CybOX 2.1", []],
+
+  ["process", "Map", [], "", [
+    [1, "extensions", "process-ext", ["?"], "Process-type specific info"],
+    [2, "is_hidden", "Boolean", ["?"], "Whether the process is hidden"],
+    [3, "pid", "Integer", ["?"], "Process ID of the process"],
+    [4, "name", "String", ["?"], "Name of the process"],
+    [5, "created", "date-time", ["?"], "Date/time at which the process was created"],
+    [6, "cwd", "String", ["?"], "Current working directory of the process"],
+    [7, "arguments", "arguments", ["?"], "List of arguments used in executing the process"],
+    [8, "environment_variables", "envars", ["?"], "List of environment variables associated with the process"],
+    [9, "opened_connections", "opened-connections", ["?"], "List of network connections opened by the process"],
+    [10, "creator_user", "user-account", ["?"], "User that created the process"],
+    [11, "binary", "file", ["?"], "Executable binary that was executed as the process"],
+    [12, "parent", "process", ["?"], "Process that spawned this one"],
+    [13, "children", "process-children", ["?"], "Processes that were spawned by this one"]]
+  ],
+
+    ["property", "Record", [], "", [
+    [1, "name", "String", ["?"], "Name of the property."]]],
+  
+  
+  ["arguments", "ArrayOf", ["#String"], ""],
+
+  ["envars", "ArrayOf", ["#String"], "Test JAS conversion bad type detection"],
+
+  ["opened-connections", "ArrayOf", ["#String"], ""],
+
+  ["process-ext", "Map", [], "", [
+    [1, "windows_process_ext", "windows-process-ext", ["?"], ""],
+    [2, "windows_service_ext", "windows-service-ext", ["?"], ""]]
+  ],
+
+  ["process-children", "ArrayOf", ["#process"], ""],
+
+  ["windows-process-ext", "Map", [], "TODO", []],
+
+  ["windows-service-ext", "Map", [], "TODO", []],
+
+  ["software", "Record", [], "", [
+    [1, "name", "String", [], "Name of the software"],
+    [2, "cpe", "String", ["?"], "From Common Platform Enumeration (CPE) v2.3 dictionary"],
+    [3, "language", "String", ["?"], "Language of the software from ISO 639-2"],
+    [4, "vendor", "String", ["?"], "Vendor of the software"],
+    [5, "version", "String", ["?"], "Version of the software"]]
+  ],
+
+  ["url", "String", [], "Uniform Resource Locator"],
+
+  ["user-account", "Map", [], "", [
+    [1, "user_id", "String", [], "Identifier of the account.  Format depends on the system the account is maintained in."],
+    [2, "account_login", "String", ["?"], "Account login string, in cases where user_id is other than what the user types to log in."],
+    [3, "account_type", "account-type", ["?"], "Value from the account-type vocabulary"],
+    [4, "display_name", "String", ["?"], "Display name of the account (e.g., Unix GECOS field)"],
+    [5, "is_service_account", "Boolean", ["?"], "Account is associated with a network service or system process, not an individual."],
+    [6, "is_privileged", "Boolean", ["?"], "Account has elevated privileges"],
+    [7, "can_escalate_privs", "Boolean", ["?"], "Account has the ability to escalate privileges"],
+    [8, "is_disabled", "Boolean", ["?"], "Account is disabled"],
+    [9, "account_created", "date-time", ["?"], "Creation date of the account"],
+    [10, "account_expires", "date-time", ["?"], "Expiration date of the account"],
+    [11, "password_last_changed", "date-time", ["?"], "When the account password was last changed"],
+    [12, "account_first_login", "date-time", ["?"], "When the account was first accessed"],
+    [13, "account_last_login", "date-time", ["?"], "When the account was last accessed"]]
+  ],
+
+  ["account-type", "Enumerated", [], "", [
+    [1, "unix", "POSIX account"],
+    [2, "windows-local", "Windows local account"],
+    [3, "windows-domain", "Windows domain account"],
+    [4, "ldap", "Lightweight Directory Access Protocol (LDAP) account"],
+    [5, "tacacs", "Terminal Access Controller Access Control System (TACACS) account"],
+    [6, "radius", "Remote Authentication Dial-in User Service (RADIUS - RFC 2865) account"],
+    [7, "nis", "Network Information System (NIS) account"],
+    [8, "openid", "OpenID account"],
+    [9, "facebook", "Facebook account"],
+    [10, "skype", "Skype account"],
+    [11, "twitter", "Twitter account"]]
+  ],
+
+  ["user-session", "Map", [], "CybOX 2.1", [
+    [1, "effective-group", "String", ["?"], ""],
+    [2, "effective-group-id", "String", ["?"], ""],
+    [3, "effective-user", "String", ["?"], ""],
+    [4, "effective-user-id", "String", ["?"], ""],
+    [5, "login-time", "date-time", ["?"], ""],
+    [6, "logout-time", "date-time", ["?"], ""]]
+  ],
+
+  ["volume", "Map", [], "CybOX 2.1", []],
+
+  ["windows-registry-key", "Record", [], "", [
+    [1, "key", "String", [], "Full registry key including the hive."],
+    [2, "values", "windows-registry-values", ["?"], "Values found under the registry key."],
+    [3, "modified", "date-time", ["?"], "Last date-time the registry key was modified."],
+    [4, "creator_user", "user-account", ["?"], "User account that created the registry key"],
+    [5, "number_of_subkeys", "Integer", ["?"], "Number of subkeys contained under the registry key"]]
+  ],
+
+  ["windows-registry-values", "ArrayOf", ["#windows-registry-value"], ""],
+
+  ["windows-registry-value", "Record", [], "", [
+    [1, "name", "String", [], "Name of the registry value.  Empty string specifies the default value."],
+    [2, "data", "String", ["?"], "Data contained in the registry key."],
+    [3, "data_type", "windows-registry-datatype-enum", ["?"], "Registry data type used in the registry value."]]
+  ],
+
+  ["windows-registry-datatype-enum", "Enumerated", [], "", [
+    [0, "REG_NONE", "No defined value type."],
+    [1, "REG_SZ", "A null-terminated string."],
+    [2, "REG_EXPAND_SZ", "A null-terminated string with unexpanded references to environment variables."],
+    [3, "REG_BINARY", "Binary data in any form."],
+    [4, "REG_DWORD", "A 32 bit number."],
+    [5, "REG_DWORD_BIG_ENDIAN", "A 32 bit number in big-endian format."],
+    [6, "REG_LINK", "A null-terminated string that contains the target path of a symbolic link."],
+    [7, "REG_MULTI_SZ", "A sequence of null-terminated strings, terminated by an empty string (\\0)."],
+    [8, "REG_RESOURCE_LIST", "A series of nested lists designed to store a resource list used by a hardware device driver."],
+    [9, "REG_FULL_RESOURCE_DESCRIPTION", "A series of nested lists designed to store a resource list used by a physical hardware device."],
+    [10, "REG_RESOURCE_REQUIREMENTS_LIST", "Device driver list of hardware resource requirements in Resource Map tree."],
+    [11, "REG_QWORD", "A 64 bit number."],
+    [12, "REG_INVALID_TYPE", "An invalid key."]]
+  ],
+
+  ["x509-certificate", "Map", [], "TODO: finish", [
+    [1, "is_self_signed", "Boolean", ["?"], "Specifies whether the certificate is self-signed"],
+    [2, "hashes", "hashes-type", ["?"], "Specifies any hashes calculated for the entire contents of the certificate"],
+    [3, "version", "String", ["?"], "Version of the encoded certificate"],
+    [4, "serial_number", "String", ["?"], "Unique identifier for the certificate"],
+    [5, "signature_algorithm", "String", ["?"], "Name of the algorithm used to sign the certificate"],
+    [6, "issuer", "String", ["?"], "Distinguished Name of the Certification Authority that issued the certificate"],
+    [7, "validity_not_before", "date-time", ["?"], "Date on which the validity period begins"],
+    [8, "validity_not_after", "date-time", ["?"], "Date on which the validity period ends"],
+    [9, "subject", "String", ["?"], "Distinguished Name of the entity associated with the public key"],
+    [10, "subject_public_key_algorithm", "String", ["?"], "Algorithm that uses the subject's public key"],
+    [11, "subject_public_key_modulus", "String", ["?"], "Modulus of an RSA public key"],
+    [12, "subject_public_key_exponent", "Integer", ["?"], "Exponent of an RSA public key"],
+    [13, "x509_v3_extensions", "x509-v3-extensions", ["?"], "X.509 v3 extensions"]]
+  ],
+
+  ["x509-v3-extensions", "ArrayOf", ["#x509-v3-extension"], ""],
+
+  ["x509-v3-extension", "Map", [], "", [
+    [1, "basic_constraints", "String", ["?"], "TODO: fill in extensions"]]
+  ],
+
+  ["openc2", "Choice", [], "Target used to query Actuator for its supported capabilities and negotiate connection", [
+    [1, "actions", "Null", [], "query: results = JSON array of supported action verbs"],
+    [2, "schema", "Null", [], "query: results = JADN syntax of supported commands"],
+    [3, "comm_supported", "Null", [], "query: results = supported communication protocol parameters"],
+    [4, "comm_selected", "comm-selected", [], "set:   target = selected communication protocol parameters"],
+    [5, "actuator_groups", "Null", [], "query: results = JSON array of actuator group names"],
+    [6, "command", "command-id", [], "cancel: target = command identifier"]]
+  ],
+
+  ["results", "Choice", [], "", [
+    [1, "string", "String", [], ""],
+    [2, "strings", "strings", [], ""],
+    [3, "comms", "comm-supported", [], ""]]
+  ],
+
+  ["strings", "ArrayOf", ["#String"], ""],
+
+  ["comm-supported", "Record", [], "Structure that is returned in response to a \"query communication\" command", [
+    [1, "serialization", "serializations", [], "Payload serialization format"],
+    [2, "connection", "connections", [], "Connection protocol"]]
+  ],
+
+  ["comm-selected", "Record", [], "Target used to set Actuator communication protocol parameters", [
+    [1, "serialization", "serialization", [], "Payload serialization format"],
+    [2, "connection", "connection", [], "Connection protocol"]]
+  ],
+
+  ["serializations", "ArrayOf", ["#serialization"], ""],
+
+  ["serialization", "Enumerated", [], "Payload serialization format", [
+    [1, "JSON", "JSON (uncompressed)"],
+    [2, "JSON-min", "JSON Minified"],
+    [3, "CBOR", "Concise Binary Object Representation (RFC 7049)"],
+    [4, "Protobuf", "Google Protocol Buffers v3"],
+    [5, "XML", "Extensible Markup Language"]]
+  ],
+
+  ["connections", "ArrayOf", ["#connection"], ""],
+
+  ["connection", "Choice", [], "Connection protocol", [
+    [1, "REST", "REST-params", [], "Representational State Transfer web service protocol"],
+    [2, "DXL", "DXL-params", [], "Data Exchange Layer protocol"]]
+  ],
+
+  ["REST-params", "Record", [], "(concept example - fix with real params)", [
+    [1, "port", "port", [], "TCP/UDP port number or application protocol name"],
+    [2, "proto", "layer4-protocol", ["?"], "IP protocol (TCP, UDP, etc)"],
+    [3, "ipver", "layer3-protocol", ["?"], "IPv4 or v6"]]
+  ],
+
+  ["DXL-params", "Record", [], "(concept example - fix with real params)", [
+    [1, "channel", "String", [], "DXL channel name"]]
+  ],
+
+  ["Null", "String", [], "FIX ME - (use zero-length string as null value for now)"]]
+
+}

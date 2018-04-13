@@ -1,0 +1,24 @@
+.navbar-inverse {
+  background-image:none;
+  background-repeat:repeat-x;
+  border-color:transparent;
+}
+
+.navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover {
+  background-color:#93b748;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color:#ffffff;
+  background-color:#4e4c49;
+  margin-right:5px;
+}
+
+.left-tab {
+  border-top-left-radius:19px;
+}
+
+.right-tab {
+  border-top-right-radius:15px;
+}
+

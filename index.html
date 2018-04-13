@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenC2 Command Generator Version 0.1</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Footer-Basic.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/tabs-Menu.css">
+    <link rel="icon" type="image/ico" href="favicon.ico">
+</head>
+
+<body>
+    <div id="openc2_Action"></div>
+    <div id="openc2_Target"></div>
+    <div id="openc2_TargetSpecifier"></div>
+    <div>
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-8 col-lg-11">
+                    <nav class="navbar navbar-dark navbar-expand-md bg-primary">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">OpenC2</a>
+                            <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navcol-1">
+                                <ul class="nav navbar-nav">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" href="#">Vision</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" href="#">Why?</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" href="#" style="font-size:16px;">Command Generator</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" href="#">FAQ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                    <div></div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="text-muted card-title mb-2">Build your own OpenC2 command
+                                <br>
+                            </h2>
+                            <p class="card-text">
+                                <br>&nbsp; &nbsp; &nbsp; &nbsp;OpenC2 Command Generator version 0.1 allows you to create an OpenC2 command by simply
+                                creating a sentance based on the action you would like to perform. The generator will generate
+                                &nbsp;the OpenC2 command to preview. You can also download sample code ready to use in curl,
+                                python or nodejs. Want to contribute? This code is located at <a href="https://github.com/netcoredor/openc2-cmdgen">Github</a>.
+                                <br>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="text-secondary card-title">OpenC2 Command Generation Step by Step</h4>
+                        </div>
+                        <div class="card-body d-inline">
+                            <div class="table-responsive-lg">
+                                <table class="table">
+                                    <thead>
+                                        <tr></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="actionRow">
+                                            <td>I want to</td>
+                                            <td class="actionTD">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light dropdown-toggle visible" data-toggle="dropdown"
+                                                        aria-expanded="false" type="button" id="actionButtonId">action</button>
+                                                    <div class="dropdown-menu" role="menu" id="actionId"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="targetRow">
+                                            <td>on a&nbsp;</td>
+                                            <td class="targetTD">
+                                                <div class="dropdown targetDropDown">
+                                                    <button class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                                                        type="button" id="targetButtonId">target</button>
+                                                    <div class="dropdown-menu" role="menu" id="targetId"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="actuatorRow">
+                                            <td>and I want it executed by</td>
+                                            <td class="actuatorTD">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                                                        type="button" id="actuatorButtonId">actuator</button>
+                                                    <div class="dropdown-menu" role="menu" id="actuatorId"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="actuatorSpecifierValueRow">
+                                        </tr>
+                                        <tr class="actuatorSpecifierRow">
+                                            <td>
+                                            </td>
+                                            <td>
+                                                <table id="actuatorRow">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form">
+                                                                <input class="dynamicInput" type="checkbox" id="actuator_id" oc2name="actuator_specifier" oc2cmdname="actuator_specifier"
+                                                                    onclick="dynamicInputCheck(this)">
+                                                                <label for="actuatorIdCheck">actuator Id</label>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="inputString input-disabled" oc2name="actuator" oc2checkbox="actuator_id" onchange="updateValues(this)" id="actuator_id_inputString"
+                                                                type="text" minlength="1" tabindex="-1" data-mp-id="actuatorId_inputString">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td>
+                                                            <div class="form">
+                                                                <input class="dynamicInput" type="checkbox" id="asset_id" oc2name="actuator_specifier" oc2cmdname="actuator_specifier" onclick="dynamicInputCheck(this)">
+                                                                <label for="assetIdCheck">asset Id</label>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="inputString input-disabled" oc2name="actuator" oc2checkbox="asset_id" oc2cmdname="actuator_specifier" onchange="updateValues(this)"
+                                                                id="asset_id_inputString" type="text" minlength="1" tabindex="-1"
+                                                                data-mp-id="assetId_inputString">
+                                                        </td>
+
+
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <button class="btn btn-success" type="button" id="generateCodeId">Generate Code</button>
+                                                <button class="btn btn-warning m-auto" type="button"
+                                                    id="resetSelectionsId">Reset Selections</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <a class="btn btn-dark btn-block" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1"
+                            role="button" href="#collapse-1" id="viewSampleCommandId">Raw OpenC2 Command</a>
+                        <div class="collapse" id="collapse-1">
+                            <p id="commandSampleContent">
+                                <pre><div id="commandSampleContentPre">{}</div></pre>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="btn btn-info btn-block d-block float-none" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-2"
+                            role="button" href="#collapse-2" id="sampleCodeDownloadId">Sample Code to Download</a>
+                        <div class="collapse" id="collapse-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Code</h4>
+                                    <p class="card-text">After selecting your desired command, you can download sample code to run with these
+                                        three different programs.</p>
+                                    <div>
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item" id="curlTabId">
+                                                <a class="nav-link" role="tab" data-toggle="tab" href="#tab-1">Curl</a>
+                                            </li>
+                                            <li class="nav-item" id="nodeJsTabId">
+                                                <a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">NodeJs</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link active" role="tab" data-toggle="tab" href="#tab-3" id="pythonTabId">Python</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane" role="tabpanel" id="tab-1">
+                                                <p>
+                                                    <pre><div id="curlCodeText">Custom Curl Code</div></pre>
+                                                </p>
+                                            </div>
+                                            <div class="tab-pane" role="tabpanel" id="tab-2">
+                                                <p>
+                                                    <pre><div id="nodejsCodeText">Custom Nodejs Code</div></pre>
+                                                </p>
+                                            </div>
+                                            <div class="tab-pane active" role="tabpanel" id="tab-3">
+                                                <p>
+                                                    <pre><div id="pythonCodeText">Custom Python Code</div></pre>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="btn btn-secondary btn-block d-block float-none" data-toggle="collapse" aria-expanded="true"
+                            aria-controls="collapse-3" role="button" href="#collapse-3" id="oc2ServerSetup">OpenC2 Server Connection Setup and Execution</a>
+                        <div class="collapse" id="collapse-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">OpenC2 Connection information</h5>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>OpenC2 Server URI</th>
+                                                    <th>
+                                                        <input type="url" value="http://localhost:1512/oc2/" inputmode="url"
+                                                            id="oc2ServerId" onkeydown="$(this).attr('size', $(this).val().length);"
+                                                        />
+                                                        <br />
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <strong>OpenC2 Server API Key</strong>
+                                                        <br />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" value="07849cf8aade4ed278b43796ba8c3d3171f424bc38e597e95fd45d536f886ba4"
+                                                            id="oc2ServerKeyId" size="30" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Execute Command</strong>
+                                                        <br />
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger m-auto" type="button" id="executeNowId">Execute Command</button>
+                                                    </td>
+                                                </tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-basic">
+        <footer class="align-items-center">
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#">Home</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#">About</a>
+                </li>
+            </ul>
+            <p class="copyright"><a href="/license.txt">AGPL V3 License</a></p>
+        </footer>
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/myscript.js"></script>
+</body>
+
+</html>
