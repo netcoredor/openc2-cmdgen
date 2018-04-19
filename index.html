@@ -57,7 +57,7 @@
                                 creating a sentence based on the action you would like to perform. The generator will generate
                                 &nbsp;the OpenC2 command to preview. You can also download sample code ready to use in curl,
                                 python or nodejs. Want to contribute? This code is located at <a href="https://github.com/netcoredor/openc2-cmdgen">Github</a>.
-                                <br>
+								<br><H6>If dropdowns do not work on the first try, refresh the browser. Tool tested on Chrome.</H6>
                             </p>
                         </div>
                     </div>
@@ -103,48 +103,6 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr class="actuatorSpecifierValueRow">
-                                        </tr>
-                                        <tr class="actuatorSpecifierRow">
-                                            <td>
-                                            </td>
-                                            <td>
-                                                <table id="actuatorRow">
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form">
-                                                                <input class="dynamicInput" type="checkbox" id="actuator_id" oc2name="actuator_specifier" oc2cmdname="actuator_specifier"
-                                                                    onclick="dynamicInputCheck(this)">
-                                                                <label for="actuatorIdCheck">actuator Id</label>
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <input class="inputString input-disabled" oc2name="actuator" oc2checkbox="actuator_id" onchange="updateValues(this)" id="actuator_id_inputString"
-                                                                type="text" minlength="1" tabindex="-1" data-mp-id="actuatorId_inputString">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td>
-                                                            <div class="form">
-                                                                <input class="dynamicInput" type="checkbox" id="asset_id" oc2name="actuator_specifier" oc2cmdname="actuator_specifier" onclick="dynamicInputCheck(this)">
-                                                                <label for="assetIdCheck">asset Id</label>
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <input class="inputString input-disabled" oc2name="actuator" oc2checkbox="asset_id" oc2cmdname="actuator_specifier" onchange="updateValues(this)"
-                                                                id="asset_id_inputString" type="text" minlength="1" tabindex="-1"
-                                                                data-mp-id="assetId_inputString">
-                                                        </td>
-
-
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-
 
                                         <tr>
                                             <td></td>
@@ -278,9 +236,9 @@
         </footer>
     </div>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/myscript.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/myscript.js"></script>
 </body>
 
 </html>
