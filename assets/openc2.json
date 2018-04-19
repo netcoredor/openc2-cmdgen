@@ -483,8 +483,7 @@
     [13, "children", "process-children", ["?"], "Processes that were spawned by this one"]]
   ],
 
-    ["property", "Record", [], "", [
-    [1, "name", "String", ["?"], "Name of the property."]]],
+ ["property", "String", [], "Uniform Resource Locator"],
   
   
   ["arguments", "ArrayOf", ["#String"], ""],
