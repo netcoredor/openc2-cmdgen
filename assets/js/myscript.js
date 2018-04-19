@@ -213,6 +213,7 @@ $("#resetSelectionsId").click(function () {
 		"actuator": {},
 	};
 	$('.targetUpdateRow').remove();
+	$('.actuatorSpecifierRow').remove();
 	$('#curlCodeText').text('');
 	$('#pythonCodeText').text('');
 	$('#nodejsCodeText').text('');
@@ -302,7 +303,6 @@ function targetFunction(selectedValue) {
 }
 function sentencetargetspecifierFunction(selectedValue) {
 	$('#target_specifierButtonId').text(selectedValue);
-	$('#sentencetarget_specifier').text(selectedValue);
 	openc2command['target_specifier'] = selectedValue;
 }
 function sentenceTargetSpecifiervalueFunction(selectedValue) {
@@ -311,21 +311,21 @@ function sentenceTargetSpecifiervalueFunction(selectedValue) {
 }
 function actuatorFunction(selectedValue) {
 	$('#actuatorButtonId').text(selectedValue);
-	$('#sentenceActuator').text(selectedValue);
 	openc2command.actuator = JSON.parse('{ "' + selectedValue + '": {}}');
+	if ($('#actuatorRow').length == 0) {
+		$('.actuatorRow').after('<tr class="actuatorSpecifierRow"><td></td><td><table id="actuatorRow"><tbody><tr><td><div class="form"><input class="dynamicInput" type="checkbox" id="actuator_id" oc2name="actuator_specifier" oc2cmdname="actuator_specifier" onclick="dynamicInputCheck(this)"><label for="actuatorIdCheck">actuator Id</label></div></td><td><input class="inputString input-disabled" oc2name="actuator" oc2checkbox="actuator_id" onchange="updateValues(this)" id="actuator_id_inputString" type="text" minlength="1" tabindex="-1" data-mp-id="actuatorId_inputString"></td></tr><tr><td><div class="form"><input class="dynamicInput" type="checkbox" id="asset_id" oc2name="actuator_specifier" oc2cmdname="actuator_specifier" onclick="dynamicInputCheck(this)"><label for="assetIdCheck">asset Id</label></div></td><td><input class="inputString input-disabled" oc2name="actuator" oc2checkbox="asset_id" oc2cmdname="actuator_specifier" onchange="updateValues(this)" id="asset_id_inputString" type="text" minlength="1" tabindex="-1" data-mp-id="assetId_inputString"></td></tr></tbody></table></td></tr>');
+	}
 }
 function actuatorValueDropDownMenuFunction(selectedValue) {
 	$('#actuatorValueButtonId').text(selectedValue);
-	$('#sentenceActuatorValue').text(selectedValue);
+
 }
 function actuatorSpecifierDropDownMenuFunction(selectedValue) {
 	$('#actuatorSpecifierButtonId').text(selectedValue);
-	$('#sentenceActuatorSpecifier').text(selectedValue);
 	openc2command['actuator_specifier'] = selectedValue;
 }
 function actuatorSpecifierValueDropDownMenuFunction(selectedValue) {
 	$('#actuatorSpecifierValueButtonId').text(selectedValue);
-	$('#sentenceActuatorSpecifierValue').text(selectedValue);
 }
 function dynamicInputCheck(test) {
 	var getCurrentValue = $('#actuatorButtonId')[0].innerText;
