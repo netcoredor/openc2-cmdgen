@@ -1,4 +1,4 @@
-//OpenC2 Command Generation Tool
+// OpenC2 Command Generation Tool
 // Copyright (C) 2018  Efrain Ortiz
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function checkBrowser() {
+	if(navigator.userAgent.indexOf("Firefox") == -1 ) {
+		event.preventDefault();
+	}
+}
 var xhttp = new XMLHttpRequest();
 var openc2command = {
 	"id": "",
@@ -26,12 +31,12 @@ var codes = [];
 var valueTypes = {};
 var jsonjadn = new Array();
 
-
-
 $(document).ready(function () {
+
 	function dropdownItem() {
-		$('.dropdown-item').on('click', (function () {
-			event.preventDefault();
+			$('.dropdown-item').on('click', (function (event) {
+				checkBrowser(event);
+				//event.preventDefault(event);
 			switch (($(this).attr('class').split(' '))[1]) {
 				case 'actionDropDownMenu':
 					actionFunction(this.text);
@@ -51,7 +56,6 @@ $(document).ready(function () {
 				case 'actuatorValueDropDownMenu':
 					actuatorValueDropDownMenuFunction(this.text);
 					break;
-
 				case 'actuatorSpecifierDropDownMenu':
 					actuatorSpecifierDropDownMenuFunction(this.text);
 					break;
@@ -118,8 +122,8 @@ $(document).ready(function () {
 
 
 	function targetDropDown(jsonjadn) {
-		$('.targetDropDownMenu').on('click', function () {
-			event.preventDefault();
+		$('.targetDropDownMenu').on('click', function (event) {
+			checkBrowser();
 			$.each(jsonjadn.responseJSON.types, function (i, v) {
 				var valueT = targetButtonId.innerText;
 				if (v[0] == valueT && (v[1] == 'Map' || v[1] == 'Record' || v[1] == 'Choice')) {
@@ -142,7 +146,6 @@ $(document).ready(function () {
 	};
 
 	function singleInputTargetRow(v) {
-		event.preventDefault();
 		$.each(v[4], function (j, w) {
 			asteriskChecker = asteriskCheck(w);
 			if (w[1] == 'encryption_algorithm') {
@@ -173,25 +176,33 @@ $(document).ready(function () {
 	populateFields();
 });
 
+function getNumber() {
+	val = Math.floor(Math.random() * 16)
+	return val.toString(16)
+}
 
-
-function getRandomNumber() {
-	value = '';
-	i = 0;
-	while (i < 32) {
-		value = Math.floor(Math.random() * 10) + '' + value;
+function get_value(entries) {
+	var valueToReturn = 0;
+	var i = 0;
+	while (i < entries) {
+		valueToReturn += getNumber();
 		i++;
 	}
-	return value;
+	return valueToReturn
+}
+
+function getRandomNumber() {
+	return get_value(7) + '-' + get_value(3) + '-' + get_value(3) + '-' + get_value(3) + '-' + get_value(11)
+
 }
 $("#executeNowId").on('click', (function () {
 	var oc2Server = $('#oc2ServerId').val();
 	var oc2ServerAPIKeyId = $('#oc2ServerKeyId').val();
 	var oc2ServerAPI = {};
-	oc2ServerAPI['oc2-api-key'] = $('#oc2ServerKeyId').val();
+	oc2ServerAPI['apikey'] = $('#oc2ServerKeyId').val();
 	xhttp.open("POST", oc2Server, true);
 	xhttp.setRequestHeader('Content-Type', 'application/json');
-	xhttp.setRequestHeader('oc2-api-key', oc2ServerAPIKeyId);
+	xhttp.setRequestHeader('apikey', oc2ServerAPIKeyId);
 
 	xhttp.onreadystatechange = function () {
 		if (this.readyState !== 4)
@@ -251,7 +262,7 @@ function sampleCodeGenerate(jsonPrettified) {
 	var curlCode = "curl -X POST " + oc2Server + " \\<br>\
 -H 'Cache-Control: no-cache' \\<br>\
 -H 'Content-Type: application/json' \\<br>\
--H 'oc2-api-key: " + oc2ServerAPIKeyId + "' \\<br>\
+-H 'apikey: " + oc2ServerAPIKeyId + "' \\<br>\
 -d '"
 	var curlCodePretty = JSON.stringify(jsonPrettified, null, 2);
 	var curlclosing = "'\n";
@@ -260,7 +271,7 @@ function sampleCodeGenerate(jsonPrettified) {
 var options = { method: 'POST',\n\
 url: '" + oc2Server + "',\n\
 headers: \
-{ 'oc2-api-key': '" + oc2ServerAPIKeyId + "',\n\
+{ 'apikey': '" + oc2ServerAPIKeyId + "',\n\
 'Content-Type': 'application/json' },\n\
 body: \n"
 	var nodeJSclosing = ",\njson: true };\n\
@@ -269,11 +280,10 @@ if (error) throw new Error(error);\n\
 console.log(body);\n\
 });"
 	$('#nodejsCodeText').text("".concat(nodeJsCode, jsonPrettified, nodeJSclosing));
-	//pythonCode = 'import requests \nurl = "' + oc2Server + '" \n\n\ payload = "'
 	var pythonCode = 'import requests\ \nurl = "' + oc2Server + '" \npayload = \''
 	var headers = {};
 	headers['Content-Type'] = "application/json";
-	headers['oc2-api-key'] = oc2ServerAPIKeyId;
+	headers['apikey'] = oc2ServerAPIKeyId;
 	headers['Cache-Control'] = "no-cache";
 	var headersString = 'headers = ' + JSON.stringify(headers);
 	var pythonEnd = 'response = requests.request("POST", url, data=payload, headers=headers)';
@@ -403,13 +413,12 @@ function dynamicInputCheck(test) {
 }
 
 function updateValues(test) {
-	event.preventDefault();
+	checkBrowser();
 	var chosenAlgorithm = $(test)[0].text;
 	var targetName = test.getAttribute('oc2name');
 	var targetOc2name = test.getAttribute('oc2cmdname');
 	if (targetName == 'target' && test.getAttribute('oc2checkbox') != 'encryption_algorithm' && test.getAttribute('oc2checkbox') != 'hash' && test.getAttribute('oc2checkbox') != 'hashes' && test.getAttribute('oc2checkbox') != 'newhashes') {
 		openc2command[targetName][targetOc2name][test.getAttribute('oc2checkbox')] = $(test)[0].innerText;
-		console.log('triggered newhashes entry');
 	}
 	if (targetName == 'target' && test.getAttribute('oc2checkbox') == 'encryption_algorithm') {
 		openc2command[targetName][targetOc2name][test.getAttribute('oc2checkbox')] = $(test)[0].innerText;
@@ -421,7 +430,6 @@ function updateValues(test) {
 		$('#' + test.getAttribute('oc2checkbox') + '_inputString')[0].innerHTML = $(test)[0].innerText;
 	}
 	if (targetName == 'target' && test.getAttribute('oc2checkbox') == 'newhashes') {
-		console.log('newhashes entry in updateValues was triggered');
 		openc2command[targetName][targetOc2name]['hashes'][chosenAlgorithm] = '';
 		$(test)["0"].parentNode.parentNode.parentNode.parentNode.children[1].childNodes["0"].firstChild.innerHTML = $(test)[0].innerText;
 	}
@@ -441,7 +449,7 @@ function asteriskCheck(w) {
 }
 
 function createNewHashRow(inObject) {
-	event.preventDefault();
+
 	var asteriskChecker = "newhashes";
 	$('#hashContent').after('<tr class="newHashTypes hashContent extraHashContent"><td><td id="' + asteriskChecker + '_hashTD" class="newHashTypes hashContent"><div class="dropdown" id="' + asteriskChecker + "_MenuList" + '"><button class="btn btn-light dropdown-toggle " data-toggle="dropdown" oc2name="target" oc2cmdname=' + $('#targetButtonId')[0].innerText + ' oc2checkbox="hashes"  id="' + asteriskChecker + '_inputString" type="dropdown" tabindex="-1" aria-expanded="false" type="button" >hashes</button></div></div></td></tr>');
 	$('#' + asteriskChecker + '_MenuList').append('<div class="dropdown-menu asteriskChecker_Class newHashTypes extraHashContent" id="' + asteriskChecker + '_Menu"></div>');
@@ -455,7 +463,6 @@ function updateInputValues(inObject) {
 	if ($(inObject)["0"].attributes['oc2checkbox'].value == "hashes" || $(inObject)["0"].attributes['oc2checkbox'].value == "hash" || $(inObject)["0"].attributes['oc2checkbox'].value == "newhashes") {
 		openc2command['target']['file']['hashes'][$(inObject)["0"].parentNode.parentNode.children[1].innerText] = $(inObject)["0"].value;
 	} else if ($(inObject)["0"].attributes['oc2checkbox'].value != "hash" && $(inObject)["0"].attributes['oc2checkbox'].value != "hashes" && $(inObject)["0"].attributes['oc2checkbox'].value != "newhashes") {
-		console.log('update Hashes called ' + $(inObject)["0"].parentNode.parentNode.children[1].innerText + ' = ' + $(inObject)["0"].value);
 		if (valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'String') {
 			openc2command[$(inObject)["0"].attributes['oc2name'].value][$(inObject)["0"].attributes['oc2cmdname'].value] = $(inObject)[0].value;
 		} else if (valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'Map' || valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'Record' || valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'Choice') {
