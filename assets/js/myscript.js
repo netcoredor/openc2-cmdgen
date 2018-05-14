@@ -190,9 +190,14 @@ function get_value(entries) {
 	}
 	return valueToReturn
 }
+function uuid_VerGet()
+{
+	var uuidver = [8,9,'a','b'];
+	return uuidver[Math.floor(Math.random()*uuidver.length)];
+}
 
 function getRandomNumber() {
-	return get_value(7) + '-' + get_value(3) + '-' + get_value(3) + '-' + get_value(3) + '-' + get_value(11)
+	return get_value(7) + '-' + get_value(3) + '-4' + get_value(2) + '-' + uuid_VerGet() + '' + get_value(2) + '-' + get_value(11)
 
 }
 $("#executeNowId").on('click', (function () {
