@@ -320,7 +320,7 @@ function targetFunction(selectedValue) {
 	$('#sentenceTarget').text(selectedValue);
 	if (valueTypes[selectedValue] == 'String') {
 		openc2command['target'] = {};
-		openc2command['target'][selectedValue] = "";
+		openc2command['target'][selectedValue] = {};
 	} else if (valueTypes[selectedValue] == 'Map' || valueTypes[selectedValue] == 'Choice' || valueTypes[selectedValue] == 'Record') {
 		openc2command['target'] = {};
 		openc2command['target'][selectedValue] = {};
@@ -469,7 +469,8 @@ function updateInputValues(inObject) {
 		openc2command['target']['file']['hashes'][$(inObject)["0"].parentNode.parentNode.children[1].innerText] = $(inObject)["0"].value;
 	} else if ($(inObject)["0"].attributes['oc2checkbox'].value != "hash" && $(inObject)["0"].attributes['oc2checkbox'].value != "hashes" && $(inObject)["0"].attributes['oc2checkbox'].value != "newhashes") {
 		if (valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'String') {
-			openc2command[$(inObject)["0"].attributes['oc2name'].value][$(inObject)["0"].attributes['oc2cmdname'].value] = $(inObject)[0].value;
+
+			openc2command[$(inObject)["0"].attributes['oc2name'].value][$(inObject)["0"].attributes['oc2checkbox'].value]['name'] = $(inObject)[0].value;
 		} else if (valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'Map' || valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'Record' || valueTypes[$(inObject)["0"].attributes['oc2cmdname'].value] == 'Choice') {
 			openc2command[$(inObject)["0"].attributes['oc2name'].value][$(inObject)["0"].attributes['oc2cmdname'].value][$(inObject)["0"].attributes['oc2checkbox'].value] = $(inObject)[0].value;
 		}
