@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenC2 Command Generator Version 0.1</title>
+    <title>OpenC2 Command Generator Version 0.2</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/Footer-Basic.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/tabs-Menu.css">
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 
 
@@ -53,7 +54,7 @@
                                 <br>
                             </h2>
                             <p class="card-text">
-                                <br>&nbsp; &nbsp; &nbsp; &nbsp;OpenC2 Command Generator version 0.1 allows you to create an OpenC2 command by simply
+                                <br>&nbsp; &nbsp; &nbsp; &nbsp;OpenC2 Command Generator version 0.1_3 allows you to create an OpenC2 command by simply
                                 creating a sentence based on the action you would like to perform. The generator will generate
                                 &nbsp;the OpenC2 command to preview. You can also download sample code ready to use in curl,
                                 python or nodejs. Want to contribute? This code is located at <a href="https://github.com/netcoredor/openc2-cmdgen">Github</a>.
@@ -103,7 +104,13 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        <tr class="argsRow">
+                                            <td>with these arguments</td>
+                                            <td class="argsTD">
+                                                <button class="btn btn-light" role="button" id="argsButtonId" type="button">args</button>
 
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td></td>
                                             <td>
@@ -183,7 +190,7 @@
                                                 <tr>
                                                     <th>OpenC2 Server URI</th>
                                                     <th>
-                                                        <input type="url" value="http://localhost:1512/oc2/" inputmode="url"
+                                                        <input type="url" value="http://localhost:1512/api/openc2/command" inputmode="url"
                                                             id="oc2ServerId" onkeydown="$(this).attr('size', $(this).val().length);"
                                                         />
                                                         <br />
@@ -235,10 +242,9 @@
             <p class="copyright"><a href="/license.txt">Apache 2 License</a></p>
         </footer>
     </div>
-
     <script src="//code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src="assets/js/myscript.js"></script>
 </body>
 

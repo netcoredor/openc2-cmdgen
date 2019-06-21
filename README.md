@@ -4,5 +4,7 @@ OpenC2 Command Generator is a web based self service application that runs compl
 The tool also generates three different sample codes for use in testing. The three different code outputs are python, curl, and NodeJs. 
 This software is being released under the AGPL v3 license. An online working version can be found at http://openc2.ortizonline.com
 
+This tool takes advantage of the work by https://github.com/bberliner/openc2-json-schema in developing the command.json and response.json files for use in OpenC2 development. The direct link to the command.json and response files is this: https://github.com/bberliner/openc2-json-schema/tree/master/src/main/resources.
+
 # Video of OpenC2 tool in action
 https://github.com/netcoredor/openc2-cmdgen/blob/master/openc2_intro.mkv
