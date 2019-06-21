@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://oasis-open.org/openc2/v1.0/response.json",
+  "title": "The OASIS OpenC2 1.0 Language Spec Response Schema",
+  "type": "object",
+
+  "required": [
+    "status"
+  ],
+
+  "properties": {
+    "status": { "$ref": "#/definitions/status" },
+    "status_text": { "$ref": "#/definitions/status_text" },
+    "results": { "$ref": "#/definitions/results" }
+  },
+  "additionalProperties": false,
+
+  "definitions": {
+
+    "pairs": {
+      "title": "List of targets applicable to each supported Action",
+      "type": "object",
+      "patternProperties": {
+        "^scan$|^locate$|^query$|^deny$|^contain$|^allow$|^start$|^stop$|^restart$|^cancel$|^set$|^update$|^redirect$|^create$|^delete$|^detonate$|^restore$|^copy$|^investigate$|^remediate$": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "title": "OpenC2 pairs target items",
+            "type": "string",
+            "enum": [
+              "artifact",
+              "command",
+              "device",
+              "domain_name",
+              "email_addr",
+              "idn_domain_name",
+              "idn_email_addr",
+              "features",
+              "file",
+              "ipv4_connection",
+              "ipv6_connection",
+              "ipv4_net",
+              "ipv6_net",
+              "iri",
+              "mac_addr",
+              "process",
+              "properties",
+              "uri",
+              "slpf:rule_number"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "results": {
+      "title": "Map of key:value pairs that contain additional results based on the invoking Command.",
+      "type": "object",
+      "properties": {
+        "versions": {
+          "title": "List of OpenC2 language versions supported by this Actuator",
+          "type": "array",
+          "items": {
+            "title": "OpenC2 version items",
+            "type": "string"
+          }
+        },
+        "profiles": {
+          "title": "List of profiles supported by this Actuator",
+          "type": "array",
+          "items": {
+            "title": "OpenC2 profile items",
+            "type": "string",
+            "pattern": "^slpf$|^x-[A-Za-z0-9_]*$"
+          }
+        },
+        "schema": { "$ref": "#/definitions/schema" },
+        "pairs": { "$ref": "#/definitions/pairs" },
+        "rate_limit": {
+          "title": "Maximum number of requests per minute supported by design or policy",
+          "type": "number",
+          "minimum": 0
+        },
+        "slpf": {
+          "title": "Response types defined in the Stateless Packet Filter profile",
+          "$ref": "#/definitions/slpf_response"
+        }
+      },
+      "patternProperties": {
+        "^x-[A-Za-z0-9_]*$": {
+          "$comment": "Non-OASIS extensions must start with x-",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "schema": {
+      "title": "JSON-Schema for the supported OpenC2 Command and Response messages",
+      "type": "object",
+      "properties": {
+        "command": {
+          "title": "JSON-Schema for OpenC2 Commands supported by this Consumer",
+          "$comment": "TODO - Add reference to standard JSON-Schema draft 07 schema definition here",
+          "type": "object"
+        },
+        "response": {
+          "title": "JSON-Schema for OpenC2 Responses returned by this Consumer",
+          "$comment": "TODO - Add reference to standard JSON-Schema draft 07 schema definition here",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "slpf_response": {
+      "title": "The OpenC2 Response defined for the slpf profile.",
+      "type": "object",
+      "properties": {
+        "rule_number": {
+          "title": "Rule identifier returned from allow or deny Command.",
+          "$ref": "#/definitions/slpf_rule_id"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "slpf_rule_id": {
+      "title": "Access rule identifier",
+      "type": "integer"
+    },
+
+    "status": {
+      "title": "An integer status code",
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 599
+    },
+
+    "status_text": {
+      "title": "A free-form human-readable description of the Response status",
+      "type": "string"
+    }
+  }
+
+}

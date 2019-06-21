@@ -1,0 +1,618 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://oasis-open.org/openc2/v1.0/command.json",
+  "title": "The OASIS OpenC2 1.0 Language Spec Command Schema",
+  "type": "object",
+
+  "required": [
+    "action",
+    "target"
+  ],
+
+  "properties": {
+    "action": { "$ref": "#/definitions/action" },
+    "target": { "$ref": "#/definitions/target" },
+    "args": { "$ref": "#/definitions/args" },
+    "actuator": { "$ref": "#/definitions/actuator" },
+    "command_id": { "$ref": "#/definitions/command_id" }
+  },
+  "additionalProperties": false,
+
+  "definitions": {
+
+    "action": {
+      "title": "OpenC2 Action",
+      "$comment": "Could use oneOf with const instead of enum to have titles on each item, but enum here is more concise",
+      "type": "string",
+      "enum": [
+        "scan",
+        "locate",
+        "query",
+        "deny",
+        "contain",
+        "allow",
+        "start",
+        "stop",
+        "restart",
+        "cancel",
+        "set",
+        "update",
+        "redirect",
+        "create",
+        "delete",
+        "detonate",
+        "restore",
+        "copy",
+        "investigate",
+        "remediate"
+      ]
+    },
+
+    "actuator": {
+      "title": "OpenC2 Actuator",
+      "$comment": "We disallow an empty actuator specified here using minProperties setting, though spec is unclear about that; Also, spec wants only a single actuator key included, but we allow many (which is needed)",
+      "type": "object",
+      "properties": {
+        "slpf": {
+          "title": "Actuator Specifiers defined in the Stateless Packet Filter profile",
+          "$ref": "#/definitions/slpf_actuator"
+        }
+      },
+      "patternProperties": {
+        "^x-[A-Za-z0-9_]*$": {
+          "$comment": "Non-OASIS extensions must start with x-",  
+          "type": "object"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "args": {
+      "title": "OpenC2 Args",
+      "type": "object",
+      "properties": {
+        "start_time": {
+          "title": "The specific date/time to initiate the Action (milliseconds since the epoch)",
+          "type": "integer",
+          "minimum": 0
+        },
+        "stop_time": {
+          "title": "The specific date/time to terminate the Action (milliseconds since the epoch)",
+          "type": "integer",
+          "minimum": 0
+        },
+        "duration": {
+          "title": "The length of time for an Action to be in effect (milliseconds)",
+          "type": "integer",
+          "minimum": 0
+        },
+        "response_requested": {
+          "title": "The type of Response required for the Action",
+          "$comment": "Could use oneOf with const instead of enum to have titles on each item (see example)",
+          "type": "string",
+          "enum": [
+            "none",
+            "ack",
+            "status",
+            "complete"
+          ]
+        },
+        "slpf": {
+          "title": "Command Arguments defined in the Stateless Packet Filter profile",
+          "$ref": "#/definitions/slpf_args"
+        }
+      },
+      "patternProperties": {
+        "^x-[A-Za-z0-9_]*$": {
+          "$comment": "Non-OASIS extensions must start with x-",
+          "type": "object"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "artifact": {
+      "title": "OpenC2 Artifact",
+      "type": "object",
+      "properties": {
+        "mime_type": {
+          "$comment": "Why is this called mime_type when it is referencing a media-type RFC?",
+          "title": "Permitted values specified in the IANA Media Types registry, RFC 6838",
+          "type": "string"
+        },
+        "payload": {
+          "$ref": "#/definitions/payload"
+        },
+        "hashes": {
+          "$ref": "#/definitions/hashes"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "binary": {
+      "title": "OpenC2 Binary",
+      "$comment": "Possible that only base64 is supported and not base64url (which spec specifies here)",
+      "type": "string",
+      "contentEncoding": "base64"
+    },
+
+    "command_id": {
+      "title": "OpenC2 Command Identifier",
+      "$comment": "Could add minimum and maximum length validators here, or a format regex to check for uuid",
+      "type": "string"
+    },
+
+    "device": {
+      "title": "OpenC2 Device",
+      "$comment": "Upgraded to require either a hostname or a device_id (or both), which is more useful",
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "title": "A hostname that can be used to connect to this device over a network",
+          "$ref": "#/definitions/hostname"
+        },
+        "idn_hostname": {
+          "title": "An internationalized hostname that can be used to connect to this device over a network",
+          "$ref": "#/definitions/idn_hostname"
+        },
+        "device_id": {
+          "title": "An identifier that refers to this device within an inventory or management system",
+          "type": "string"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "domain_name": {
+      "title": "RFC 1034, section 3.5",
+      "type": "string",
+      "format": "hostname"
+    },
+
+    "email_addr": {
+      "title": "Email address",
+      "type": "string",
+      "format": "email"
+    },
+
+    "idn_domain_name": {
+      "title": "Internationalized Domain Name, [RFC5890], Section 2.3.2.3.",
+      "type": "string",
+      "format": "idn-hostname"
+    },
+
+    "idn_email_addr": {
+      "title": "Internationalized email address, [RFC6531]",
+      "type": "string",
+      "format": "idn-email"
+    },
+
+    "idn_hostname": {
+      "title": "Internationalized Internet host name as specified in [RFC5890], Section 2.3.2.3.",
+      "type": "string",
+      "format": "idn-hostname"
+    },
+
+    "features": {
+      "title": "An array of zero to ten names used to query an Actuator for its supported capabilities.",
+      "$comment": "Upgraded to not allow repeating enums in the array (unique items only). Could use oneOf with const instead of enum to have titles on each item (see example)",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "title": "OpenC2 Features items",
+        "type": "string",
+        "enum": [
+          "versions",
+          "profiles",
+          "pairs",
+          "rate_limit"
+        ]
+      }
+    },
+
+    "file": {
+      "title": "OpenC2 File",
+      "$comment": "Upgraded to require any one of these (or more), which is more useful",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "The name of the file as defined in the file system",
+          "$ref": "#/definitions/hostname"
+        },
+        "path": {
+          "title": "The absolute path to the location of the file in the file system",
+          "type": "string"
+        },
+        "hashes": {
+          "title": "One or more cryptographic hash codes of the file contents",
+          "$ref": "#/definitions/hashes"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "hashes": {
+      "title": "OpenC2 Hashes",
+      "$comment": "Upgrade to require at least one of (the spec allows it to be empty, but that is not useful)",
+      "type": "object",
+      "properties": {
+        "md5": {
+          "title": "MD5 hash as defined in RFC 1321",
+          "$ref": "#/definitions/binary"
+        },
+        "sha1": {
+          "title": "SHA1 hash as defined in RFC 6234",
+          "$ref": "#/definitions/binary"
+        },
+        "sha256": {
+          "title": "SHA256 hash as defined in RFC 6234",
+          "$ref": "#/definitions/binary"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "hostname": {
+      "title": "A legal Internet host name as specified in RFC 1123",
+      "type": "string",
+      "format": "hostname"
+    },
+
+    "ipv4_net": {
+      "title": "An IPv4 address range including CIDR prefix length.",
+      "$comment": "JSON Schema appears not to have built-in support for matching IPv4 addr with CIDR, so using custom regex here",
+      "type": "string",
+      "pattern": "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\\/(\\d|[12]\\d|3[01]))?$"
+    },
+
+    "ipv6_net": {
+      "title": "An IPv6 address range including prefix length.",
+      "$comment": "JSON Schema appears not to have built-in support for matching IPv6 addr with prefix length, so using custom regex here",
+      "type": "string",
+      "pattern": "^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))(%.+)?s*(\\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))?$"
+    },
+
+    "ipv4_connection": {
+      "title": "OpenC2 IPv4 Connection",
+      "$comment": "Should require one or both of src_addr or dst_addr; TODO - Add if statement for that.",
+      "type": "object",
+      "properties": {
+        "src_addr": {
+          "title": "IPv4 source address range",
+          "$ref": "#/definitions/ipv4_net"
+        },
+        "src_port": {
+          "title": "source service per RFC 6335",
+          "$ref": "#/definitions/port"
+        },
+        "dst_addr": {
+          "title": "IPv4 destination address range",
+          "$ref": "#/definitions/ipv4_net"
+        },
+        "dst_port": {
+          "title": "destination service per RFC 6335",
+          "$ref": "#/definitions/port"
+        },
+        "protocol": {
+          "title": "layer 4 protocol (e.g., TCP) - see l4_protocol section",
+          "$ref": "#/definitions/l4_protocol"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "ipv6_connection": {
+      "title": "OpenC2 IPv6 Connection",
+      "$comment": "Should require one or both of src_addr or dst_addr; TODO - Add if statement for that.",
+      "type": "object",
+      "properties": {
+        "src_addr": {
+          "title": "IPv6 source address range",
+          "$ref": "#/definitions/ipv6_net"
+        },
+        "src_port": {
+          "title": "source service per RFC 6335",
+          "$ref": "#/definitions/port"
+        },
+        "dst_addr": {
+          "title": "IPv6 destination address range",
+          "$ref": "#/definitions/ipv6_net"
+        },
+        "dst_port": {
+          "title": "destination service per RFC 6335",
+          "$ref": "#/definitions/port"
+        },
+        "protocol": {
+          "title": "layer 4 protocol (e.g., TCP) - see l4_protocol section",
+          "$ref": "#/definitions/l4_protocol"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "iri": {
+      "title": "OpenC2 IRI - An internationalized resource identifier (IRI).",
+      "$comment": "Should this include relative-reference URI's as well, using uri-reference format?",
+      "type": "string",
+      "format": "iri"
+    },
+
+    "l4_protocol": {
+      "title": "Value of the protocol (IPv4) or next header (IPv6) field in an IP packet. Any IANA value, RFC 5237",
+      "$comment": "Could use oneOf with const instead of enum to have titles on each item (see example)",
+      "type": "string",
+      "enum": [
+        "icmp",
+        "tcp",
+        "udp",
+        "sctp"
+      ]
+    },
+
+    "mac_addr": {
+      "title": "OpenC2 MAC Address",
+      "$comment": "Upgraded this to a string in standard MAC Address Format",
+      "type": "string",
+      "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
+    },
+
+    "payload": {
+      "title": "OpenC2 Payload",
+      "$comment": "Why is this 'url' instead of 'uri'?",
+      "type": "object",
+      "properties": {
+        "bin": {
+          "title": "Specifies the data contained in the artifact",
+          "$ref": "#/definitions/binary"
+        },
+        "url": {
+          "title": "MUST be a valid URL that resolves to the un-encoded content",
+          "$ref": "#/definitions/uri"
+        }
+      },
+      "minProperties": 1,
+      "maxProperties": 1,
+      "additionalProperties": false
+    },
+
+    "port": {
+      "title": "Transport Protocol Port Number, RFC 6335",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65535
+    },
+
+    "process": {
+      "title": "OpenC2 Process",
+      "$comment": "Upgraded to require at least one property specified",
+      "type": "object",
+      "properties": {
+        "pid": {
+          "title": "Process ID of the process",
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "title": "Name of the process",
+          "type": "string"
+        },
+        "cwd": {
+          "title": "Current working directory of the process",
+          "type": "string"
+        },
+        "executable": {
+          "title": "Executable that was executed to start the process",
+          "$ref": "#/definitions/file"
+        },
+        "parent": {
+          "title": "Process that spawned this one",
+          "$ref": "#/definitions/process"
+        },
+        "command_line": {
+          "title": "The full command line invocation used to start this process, including all arguments",
+          "type": "string"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+
+    "properties": {
+      "title": "OpenC2 Properties",
+      "$comment": "Upgraded to not allow repeating items in the array (unique items only)",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "title": "OpenC2 Properties items",
+        "type": "string"
+      }
+    },
+
+    "slpf_actuator": {
+      "title": "The Actuator Specifiers defined for the slpf profile.",
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "title": "RFC 1123 hostname (can be a domain name or IP address) for a particular device with SLPF functionality",
+          "$ref": "#/definitions/hostname"
+        },
+        "named_group": {
+          "title": "User defined collection of devices with SLPF functionality",
+          "type": "string"
+        },
+        "asset_id": {
+          "title": "Unique identifier for a particular SLPF",
+          "type": "string"
+        },
+        "asset_tuple": {
+          "title": "Unique tuple identifier for a particular SLPF consisting of a list of up to 10 strings",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "title": "SLPF Asset Tuple",
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 10
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "slpf_args": {
+      "title": "The Command Arguments defined for the slpf profile.",
+      "type": "object",
+      "properties": {
+        "drop_process": {
+          "title": "Specifies how to handle denied packets",
+          "$ref": "#/definitions/slpf_drop_process"
+        },
+        "persistent": {
+          "title": "Normal operations assume any changes to a device are to be implemented persistently. Setting the persistent modifier to FALSE results in a change that is not persistent in the event of a reboot or restart",
+          "type": "boolean"
+        },
+        "direction": {
+          "title": "Specifies whether to apply rules to incoming or outgoing traffic. If omitted, rules are applied to both.",
+          "$ref": "#/definitions/slpf_direction"
+        },
+        "insert_rule": {
+          "title": "Specifies the identifier of the rule within a list, typically used in a top-down rule list.",
+          "$ref": "#/definitions/slpf_rule_id"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "slpf_direction": {
+      "title": "The Command Arguments defined for the slpf profile.",
+      "type": "string",
+      "enum": [
+        "both",
+        "ingress",
+        "egress"
+      ]
+    },
+
+    "slpf_drop_process": {
+      "type": "string",
+      "enum": [
+        "none",
+        "reject",
+        "false_ack"
+      ]
+    },
+
+    "slpf_rule_id": {
+      "title": "Access rule identifier",
+      "type": "integer"
+    },
+
+    "target": {
+      "title": "OpenC2 Target",
+      "type": "object",
+      "properties": {
+        "artifact": {
+          "title": "An array of bytes representing a file-like object or a link to that object.",
+          "$ref": "#/definitions/artifact"
+        },
+        "command_id": {
+          "title": "A reference to a previously issued Command.",
+          "$ref": "#/definitions/command_id"
+        },
+        "device": {
+          "title": "The properties of a hardware device.",
+          "$ref": "#/definitions/device"
+        },
+        "domain_name": {
+          "title": "A network domain name.",
+          "$ref": "#/definitions/domain_name"
+        },
+        "email_addr": {
+          "title": "A single email address.",
+          "$ref": "#/definitions/email_addr"
+        },
+        "features": {
+          "title": "A set of items used with the query Action to determine an Actuator's capabilities.",
+          "$ref": "#/definitions/features"
+        },
+        "file": {
+          "title": "Properties of a file.",
+          "$ref": "#/definitions/file"
+        },
+        "idn_domain_name": {
+          "title": "An internationalized domain name.",
+          "$ref": "#/definitions/idn_domain_name"
+        },
+        "idn_email_addr": {
+          "title": "A single internationalized email address.",
+          "$ref": "#/definitions/idn_email_addr"
+        },
+        "ipv4_connection": {
+          "title": "A 5-tuple of source and destination IPv4 address ranges, source and destination ports, and protocol",
+          "$ref": "#/definitions/ipv4_connection"
+        },
+        "ipv6_connection": {
+          "title": "A 5-tuple of source and destination IPv6 address ranges, source and destination ports, and protocol",
+          "$ref": "#/definitions/ipv6_connection"
+        },
+        "ipv4_net": {
+          "title": "An IPv4 address range including CIDR prefix length.",
+          "$ref": "#/definitions/ipv4_net"
+        },
+        "ipv6_net": {
+          "title": "An IPv6 address range including prefix length.",
+          "$ref": "#/definitions/ipv6_net"
+        },
+        "iri": {
+          "title": "An internationalized resource identifier (IRI).",
+          "$ref": "#/definitions/uri"
+        },
+        "mac_addr": {
+          "title": "A Media Access Control (MAC) address - EUI-48 or EUI-64",
+          "$ref": "#/definitions/mac_addr"
+        },
+        "process": {
+          "title": "Common properties of an instance of a computer program as executed on an operating system.",
+          "$ref": "#/definitions/process"
+        },
+        "properties": {
+          "title": "Data attribute associated with an Actuator",
+          "$ref": "#/definitions/properties"
+        },
+        "uri": {
+          "title": "A uniform resource identifier(URI).",
+          "$ref": "#/definitions/uri"
+        },
+        "slpf:rule_number": {
+          "title": "Immutable identifier assigned when a rule is created, Identifies a rule to be deleted.",
+          "$ref": "#/definitions/slpf_rule_id"
+        }
+      },
+      "patternProperties": {
+        "^x-[A-Za-z0-9][A-Za-z0-9_]*:[A-Za-z0-9][A-Za-z0-9_]*$": {
+          "$comment": "Non-OASIS target extensions must start with x- and be separated by a colon",
+          "type": "object"
+        }
+      },
+      "minProperties": 1,
+      "maxProperties": 1,
+      "additionalProperties": false
+    },
+
+    "uri": {
+      "title": "OpenC2 URI",
+      "$comment": "Should this include relative-reference URI's as well, using uri-reference format?",
+      "type": "string",
+      "format": "uri"
+    }
+  }
+
+}
