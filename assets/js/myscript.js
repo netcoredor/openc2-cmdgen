@@ -333,6 +333,13 @@ function targetFunction(selectedValue) {
 	definitions = openc2CommandSchema.definitions;
 	$('#targetButtonId').text(selectedValue);
 	openc2command['target'] = {};
+
+	if (selectedValue === 'command') {
+		selectedValue = 'command_id';
+	} else if (selectedValue === 'slpf:rule_number') {
+		selectedValue = 'slpf_rule_id';
+	}
+	
 	if (definitions[selectedValue].type == 'string') {
 		openc2command['target'][selectedValue] = "";
 	} else if (definitions[selectedValue].type == 'object') {
